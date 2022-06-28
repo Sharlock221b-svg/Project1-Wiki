@@ -1,0 +1,20 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+    <h1>Search Results:</h1>
+    
+    {% if entries|length %}
+    <ul>
+        {% for entry in entries %}
+        <a href="{% url 'encyclopedia:getPage' title=entry %}"><li style="font-size: 22px;">{{ entry }}</li></a>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3 style="color: rgb(247, 142, 142); padding-left: 20px;">No Results Found...</h3>
+    {% endif %}
+
+{% endblock %}
