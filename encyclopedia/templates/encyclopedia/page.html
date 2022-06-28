@@ -1,0 +1,21 @@
+{% extends "encyclopedia/layout.html" %}
+ {% block title %} 
+ {{ title }}
+{% endblock %} 
+
+{% block body %} 
+
+{{ body|safe }}
+
+{% if title != "Not Found" %}
+<a href="{% url 'encyclopedia:index' %}" class="btn btn-info">Home</a>
+{% else %}
+<a
+  href="{% url 'encyclopedia:index' %}"
+  class="btn btn-info"
+  style="padding-left: 15px; padding-right: 15px"
+  >Edit
+</a>
+{% endif %} 
+
+{% endblock %}
