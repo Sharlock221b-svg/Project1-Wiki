@@ -8,4 +8,5 @@ app_name = "encyclopedia"
 urlpatterns = [
     path("", views.index, name="index"),
     path("wiki/<str:title>/", views.getPage, name="getPage"),
+    path("wiki/new", views.newPage, name="newPage")
 ]

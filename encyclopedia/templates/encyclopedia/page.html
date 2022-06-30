@@ -7,7 +7,7 @@
 
 {{ body|safe }}
 
-{% if title != "Not Found" %}
+{% if title == "Not Found" or title == "Already Exists" %}
 <a href="{% url 'encyclopedia:index' %}" class="btn btn-info">Home</a>
 {% else %}
 <a

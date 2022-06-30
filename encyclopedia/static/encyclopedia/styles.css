@@ -41,3 +41,8 @@ textarea {
 #bar{
     padding: 25px;
 }
+
+#inForm{
+    display: flex;
+    flex-wrap: wrap;
+}
