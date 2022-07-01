@@ -11,7 +11,7 @@
 <a href="{% url 'encyclopedia:index' %}" class="btn btn-info">Home</a>
 {% else %}
 <a
-  href="{% url 'encyclopedia:index' %}"
+  href="{% url 'encyclopedia:edit' title=title%}"
   class="btn btn-info"
   style="padding-left: 15px; padding-right: 15px"
   >Edit

@@ -8,5 +8,7 @@ app_name = "encyclopedia"
 urlpatterns = [
     path("", views.index, name="index"),
     path("wiki/<str:title>/", views.getPage, name="getPage"),
-    path("wiki/new", views.newPage, name="newPage")
+    path("wiki/new", views.newPage, name="newPage"),
+    path("wiki/edit/<str:title>", views.edit, name="edit"),
+    path("wiki/random", views.Random, name="random")
 ]

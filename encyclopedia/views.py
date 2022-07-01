@@ -1,5 +1,3 @@
-from cProfile import label
-from turtle import title
 from django.http import (
     HttpResponse,
     HttpResponseNotFound,
@@ -11,11 +9,17 @@ from django.urls import reverse
 import markdown2
 from . import util
 from django import forms
+import random
 
 class newEntryPage(forms.Form):
     title = forms.CharField(
         label="Title", widget=forms.TextInput(attrs={"class": "form-control"})
     )
+    text = forms.CharField(
+        label="Conent", widget=forms.Textarea(attrs={"class": "form-control"})
+    )
+
+class editEntry(forms.Form):
     text = forms.CharField(
         label="Conent", widget=forms.Textarea(attrs={"class": "form-control"})
     )
@@ -111,3 +115,32 @@ def newPage(request):
 
     else:
         return render(request, "encyclopedia/newPage.html", {"form": newEntryPage()})
+
+
+def edit(request, title):
+    if request.method == "POST":
+        form = editEntry(request.POST)
+
+        if form.is_valid():
+            text = form.cleaned_data["text"]
+            util.save_entry(title, text)
+            return HttpResponseRedirect(reverse("encyclopedia:getPage", args=(title,)))
+        else:
+            return HttpResponse("Please Fill the Form Correctly!!.. Retry")
+
+    else:
+        data = util.get_entry(title)
+        dic = {"text": data}
+        form = editEntry(initial=dic)
+        return render(
+            request,
+            "encyclopedia/editEntry.html",
+            {"title": title.capitalize(), "form": form},
+        )
+
+
+def Random(request):
+    arr = util.list_entries()
+    title = random.choice(arr)
+    print(title)
+    return HttpResponseRedirect(reverse("encyclopedia:getPage", args=(title,)))
