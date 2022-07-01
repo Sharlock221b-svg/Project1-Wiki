@@ -11,6 +11,7 @@ from . import util
 from django import forms
 import random
 
+#Form to create a new Page
 class newEntryPage(forms.Form):
     title = forms.CharField(
         label="Title", widget=forms.TextInput(attrs={"class": "form-control"})
@@ -19,6 +20,7 @@ class newEntryPage(forms.Form):
         label="Conent", widget=forms.Textarea(attrs={"class": "form-control"})
     )
 
+#Form for editing a page
 class editEntry(forms.Form):
     text = forms.CharField(
         label="Conent", widget=forms.Textarea(attrs={"class": "form-control"})
@@ -78,7 +80,6 @@ def getPage(request, title):
         )
     # Else renders the page as an HTML file
     else:
-        print(page)
         return render(
             request,
             "encyclopedia/page.html",
@@ -86,21 +87,26 @@ def getPage(request, title):
         )
 
 
+#newPage function
 def newPage(request):
+    #if accessed via POST
     if request.method == "POST":
+        #Gets tha form
         form = newEntryPage(request.POST)
 
-        if form.is_valid():
+        if form.is_valid():#Checks for validity
+
             title = form.cleaned_data["title"]
             content = form.cleaned_data["text"]
             exits = util.get_entry(title)
 
             if exits is None:
+                #Save the entry and gets the page via getPage 
                 util.save_entry(title, content)
                 return HttpResponseRedirect(
                     reverse("encyclopedia:getPage", args=(title,))
                 )
-            else:
+            else:   #If such form already exits
                 return render(
                     request,
                     "encyclopedia/page.html",
@@ -112,13 +118,15 @@ def newPage(request):
 
         else:
             return HttpResponse("Please Fill the Form Correctly!!.. Retry")
-
+   
+   #Renders a form to create a new page
     else:
         return render(request, "encyclopedia/newPage.html", {"form": newEntryPage()})
 
 
 def edit(request, title):
     if request.method == "POST":
+        #If accessed via post then gets the changed content and save it
         form = editEntry(request.POST)
 
         if form.is_valid():
@@ -129,6 +137,7 @@ def edit(request, title):
             return HttpResponse("Please Fill the Form Correctly!!.. Retry")
 
     else:
+        #Gets the content of the page woth get_entry function and title, then initialize the form with the value received and renders the form with the content.
         data = util.get_entry(title)
         dic = {"text": data}
         form = editEntry(initial=dic)
@@ -140,7 +149,7 @@ def edit(request, title):
 
 
 def Random(request):
+    #Gets the list of entries selects one at random and then displays it
     arr = util.list_entries()
     title = random.choice(arr)
-    print(title)
     return HttpResponseRedirect(reverse("encyclopedia:getPage", args=(title,)))

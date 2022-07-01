@@ -2,12 +2,4 @@
 
 
 
-
-
-
-
-Python is a programming language that can be used both for writing **command-line scripts** or building **web applications**.
-
-
-
-Parts of it are:
+Python is a programming language that can be used both for writing **command-line scripts** or building **web applications**.
